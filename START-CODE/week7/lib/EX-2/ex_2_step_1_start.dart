@@ -1,77 +1,39 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          title: const Text("Favorite cards"),
-        ),
-        body: Column(
-          children: [
-            Container(
-              // YOUR CODE
-              child: Column(
-                children: [
-                  FavoriteCard(
-                    title: "title",
-                    description: "description",
-                    isFavorite: false,
-                  ),
-                  FavoriteCard(
-                    title: "title",
-                    description: "description",
-                    isFavorite: true,
-                  ),
-                  FavoriteCard(
-                    title: "title",
-                    description: "description",
-                    isFavorite: true,
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    ));
-
 class FavoriteCard extends StatefulWidget {
   final String title;
   final String description;
-  final bool isFavorite;
-
   const FavoriteCard({
     super.key,
     required this.title,
     required this.description,
-    required this.isFavorite,a
   });
 
   @override
-  State<FavoriteCard> createState() => _FavoriteCardState();
+  State<FavoriteCard> createState() => _FavoriteCardSate();
 }
 
-class _FavoriteCardState extends State<FavoriteCard> {
-  late bool favorite;
-
-  @override
-  void initState() {
-    super.initState();
-    favorite = widget.isFavorite;
+class _FavoriteCardSate extends State<FavoriteCard> {
+  bool isFavorite = false;
+  Icon getFavoriteIcon(){
+    if (isFavorite){
+      return const Icon(
+        Icons.favorite,
+        color: Colors.red,
+      );
+    } else {
+      return const Icon(
+        Icons.favorite_border,
+        color: Colors.grey,
+      );
+    }
   }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(12),
       decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.grey,
-            width: 0.5,
-          ),
-        ),
+        border: Border(bottom: BorderSide(color: Colors.grey)),
       ),
       child: Row(
         children: [
@@ -81,25 +43,52 @@ class _FavoriteCardState extends State<FavoriteCard> {
               children: [
                 Text(
                   widget.title,
-                  style: const TextStyle(color: Colors.blue),
+                  style: const TextStyle(color: Colors.blue, fontSize: 16),
                 ),
+                const SizedBox(height: 5),
                 Text(widget.description),
               ],
             ),
           ),
-          IconButton(
-            onPressed: () {
-              setState(() {
-                favorite = !favorite;
-              });
-            },
-            icon: Icon(
-              favorite ? Icons.favorite : Icons.favorite_border,
-              color: favorite ? Colors.red : Colors.grey,
-            ),
-          ),
+          IconButton(onPressed: () {
+            setState(() {
+              isFavorite = !isFavorite;
+            });
+          }, 
+          icon: getFavoriteIcon(),
+          )
         ],
+
       ),
     );
   }
 }
+
+void main() => runApp(
+  MaterialApp(
+    home: Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: const Text("Favorite cards"),
+      ),
+      body: Column(
+        children: const [
+            // YOUR CODE
+            FavoriteCard(
+              title: "Flutter", 
+              description: "Mobile development"
+            ),
+            FavoriteCard(
+              title: "Flutter", 
+              description: "Mobile development"
+            ),
+            FavoriteCard(
+              title: "Flutter", 
+              description: "Mobile development"
+            ),
+          ],
+      ),
+    ),
+  ),
+);
